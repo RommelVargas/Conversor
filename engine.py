@@ -33,3 +33,18 @@ def convertir_presion(valor, de_unidad, a_unidad):
     valor_en_pa = valor * factores_pa[de_unidad]
     resultado = valor_en_pa / factores_pa[a_unidad]
     return resultado
+
+DICCIONARIO_MASA = {
+    'Kilogramo (kg)': 1.0,
+    'Gramo (g)': 0.001,
+    'Miligramo (mg)': 0.000001,
+    'Libra (lb)': 0.45359237,      # 1 lb = 0.4535... kg
+    'Onza (oz)': 0.0283495237,    # 1 oz = 0.0283... kg
+    'Tonelada (t)': 1000.0
+}
+
+def convertir_masa(valor, de_unidad, a_unidad):
+    # Convertimos a la base (kg) y luego a la unidad destino
+    valor_en_kg = valor * DICCIONARIO_MASA[de_unidad]
+    resultado = valor_en_kg / DICCIONARIO_MASA[a_unidad]
+    return resultado
