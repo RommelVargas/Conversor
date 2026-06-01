@@ -5,9 +5,6 @@ import streamlit as st
 
 st.title("Convertidor de Unidades")
 
-# Menú lateral
-st.title("Convertidor de Unidades de Ingeniería")
-
 # El menú se alimenta automáticamente de las llaves de tu diccionario maestro
 opciones_menu = ["Temperatura"] + list(SISTEMAS_LINEALES.keys())
 modo = st.sidebar.selectbox("Selecciona qué deseas convertir:", opciones_menu)
