@@ -1,8 +1,6 @@
 from engine import convertir_temperatura, convertir_presion
 import streamlit as st
 
-m = "Hola"
-
 # --- INTERFAZ DE USUARIO ---
 
 st.title("Convertidor de Unidades")
