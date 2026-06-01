@@ -1,4 +1,4 @@
-from engine import convertir_temperatura, convertir_presion, convertir_masa
+from engine import convertir_temperatura, convertir_unidades, SISTEMAS_LINEALES
 import streamlit as st
 
 # --- INTERFAZ DE USUARIO ---
@@ -6,9 +6,12 @@ import streamlit as st
 st.title("Convertidor de Unidades")
 
 # Menú lateral
-modo = st.sidebar.selectbox("Selecciona qué deseas convertir:", ["Temperatura", "Presión", "Masa"])
+st.title("Convertidor de Unidades de Ingeniería")
 
-# Layout en columnas para hacerlo más estético
+# El menú se alimenta automáticamente de las llaves de tu diccionario maestro
+opciones_menu = ["Temperatura"] + list(SISTEMAS_LINEALES.keys())
+modo = st.sidebar.selectbox("Selecciona qué deseas convertir:", opciones_menu)
+
 col1, col2, col3 = st.columns([2, 1, 2])
 
 if modo == "Temperatura":
@@ -21,42 +24,28 @@ if modo == "Temperatura":
     with col3:
         unidad_destino = st.selectbox("A:", unidades_temp)
         
-    # Cálculo
     resultado = convertir_temperatura(valor_origen, unidad_origen, unidad_destino)
     
     with col3:
         st.write("### Resultado:")
         st.success(f"{resultado:.2f} {unidad_destino}")
 
-elif modo == "Presión":
-    unidades_pres = ['Pascal', 'Atmósfera', 'Bar', 'PSI', 'Milímetros de mercurio']
+else:
+    # Extraemos el diccionario específico que el usuario eligió
+    diccionario_actual = SISTEMAS_LINEALES[modo]
+    
+    # Extraemos las unidades de ese diccionario
+    unidades_disponibles = list(diccionario_actual.keys())
     
     with col1:
-        unidad_origen = st.selectbox("De:", unidades_pres)
+        unidad_origen = st.selectbox("De:", unidades_disponibles)
         valor_origen = st.number_input("Valor:", value=1.0, format="%.4f")
         
     with col3:
-        unidad_destino = st.selectbox("A:", unidades_pres)
+        unidad_destino = st.selectbox("A:", unidades_disponibles)
         
-    # Cálculo
-    resultado = convertir_presion(valor_origen, unidad_origen, unidad_destino)
-    
-    with col3:
-        st.write("### Resultado:")
-        st.success(f"{resultado:.4f} {unidad_destino}")
-
-elif modo == "Masa":
-    unidades_masa = ['Kilogramo (kg)', 'Gramo (g)', 'Miligramo (mg)', 'Libra (lb)', 'Onza (oz)', 'Tonelada (t)']
-    
-    with col1:
-        unidad_origen = st.selectbox("De:", unidades_masa)
-        valor_origen = st.number_input("Valor:", value=1.0, format="%.4f")
-        
-    with col3:
-        unidad_destino = st.selectbox("A:", unidades_masa)
-        
-    # Cálculo
-    resultado = convertir_masa(valor_origen, unidad_origen, unidad_destino)
+    # Magia: Llamamos a la función universal pasándole el diccionario_actual
+    resultado = convertir_unidades(valor_origen, unidad_origen, unidad_destino, diccionario_actual)
     
     with col3:
         st.write("### Resultado:")
